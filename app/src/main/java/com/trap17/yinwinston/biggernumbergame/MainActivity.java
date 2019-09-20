@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     TextView score;
     EditText name;
-    Button left, right,start;
+    Button left, right, start, reset;
     ImageView graphic;
     int scores = 0;
     @Override
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         score = findViewById(R.id.score);
         name = findViewById(R.id.insertName);
         graphic = findViewById(R.id.graphic);
+        reset = findViewById(R.id.reset);
         start.setOnClickListener(new View.OnClickListener(){//once started, left button and right numbers get random numbers between 0-100 and start button becomes invisible
             @Override
             public void onClick(View v){
@@ -67,13 +68,20 @@ public class MainActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 }
-                score.setText(name.getText().toString()+"'s Score: " + scores);
+                if(name.getText().toString() != ""){
+                    score.setText(name.getText().toString()+"'s Score: " + scores);
+                }
+                else {
+                    score.setText("Your Score" + scores);
+                }
                 if(scores == 500){// if score reaches 500, show congrats message
                     graphic.setImageResource(R.drawable.congrats);
                     left.setVisibility(View.INVISIBLE);
                     left.setClickable(false);
                     right.setVisibility(View.INVISIBLE);
                     right.setClickable(false);
+                    reset.setClickable(true);
+                    reset.setVisibility(View.VISIBLE);
                 }
                 else if(scores == -200){ //else show a sorry image
                     graphic.setImageResource(R.drawable.sorry);
@@ -81,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
                     left.setClickable(false);
                     right.setVisibility(View.INVISIBLE);
                     right.setClickable(false);
+                    reset.setClickable(true);
+                    reset.setVisibility(View.VISIBLE);
                 }
                 else {
                     int rand = (int)(Math.random()*100);
@@ -109,13 +119,20 @@ public class MainActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 }
-                score.setText(name.getText().toString()+"'s Score: " + scores);
+                if(name.getText().toString() != ""){
+                    score.setText(name.getText().toString()+"'s Score: " + scores);
+                }
+                else {
+                    score.setText("Your Score" + scores);
+                }
                 if(scores == 500){
                     graphic.setImageResource(R.drawable.congrats);
                     left.setVisibility(View.INVISIBLE);
                     left.setClickable(false);
                     right.setVisibility(View.INVISIBLE);
                     right.setClickable(false);
+                    reset.setClickable(true);
+                    reset.setVisibility(View.VISIBLE);
                 }
                 else if(scores == -200){
                     graphic.setImageResource(R.drawable.sorry);
@@ -123,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
                     left.setClickable(false);
                     right.setVisibility(View.INVISIBLE);
                     right.setClickable(false);
+                    reset.setClickable(true);
+                    reset.setVisibility(View.VISIBLE);
                 }
                 else {
                     int rand = (int)(Math.random()*100);
@@ -130,6 +149,20 @@ public class MainActivity extends AppCompatActivity {
                     rand = (int)(Math.random()*100);
                     right.setText(""+rand);
                 }
+            }
+        });
+        reset.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                start.setVisibility(View.VISIBLE);
+                start.setClickable(true);
+                reset.setVisibility(View.INVISIBLE);
+                reset.setClickable(false);
+                scores = 0;
+                score.setText("Score: 0");
+                name.setClickable(true);
+                name.setVisibility(View.VISIBLE);
+                name.setText("");
             }
         });
 
