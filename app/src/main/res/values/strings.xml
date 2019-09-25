@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">BiggerNumberGame</string>
     <string name="score">Score: 0</string>
-    <string name = "instructions">Click the Number with the Larger Numerical Value \n Press Start to Begin \n Game Ends at -200 or 500 Points</string>
+    <string name = "instructions">Click the Number with the Larger Numerical Value \n Press Start to Begin \n Game Ends at -200 or 500 Points or when Timer stops</string>
     <string name="start">Start</string>
     <string name="name">Enter Your Name</string>
     <string name="reset">Reset</string>
+    <string name="time">Time: %1$d</string>
 </resources>

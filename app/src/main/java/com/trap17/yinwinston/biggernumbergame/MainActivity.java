@@ -13,13 +13,16 @@ import android.content.Context;
 import android.view.View.OnClickListener;
 import java.lang.Math.*;
 import android.widget.Toast;
+import java.util.TimerTask;
+import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity {
-    TextView score;
+    TextView score,timeTracker;
     EditText name;
     Button left, right, start, reset;
     ImageView graphic;
-    int scores = 0;
+    int scores,duration = 0;
+    Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         name = findViewById(R.id.insertName);
         graphic = findViewById(R.id.graphic);
         reset = findViewById(R.id.reset);
+        timeTracker = findViewById(R.id.timer);
         start.setOnClickListener(new View.OnClickListener(){//once started, left button and right numbers get random numbers between 0-100 and start button becomes invisible
             @Override
             public void onClick(View v){
@@ -47,6 +51,33 @@ public class MainActivity extends AppCompatActivity {
                 rand = (int)(Math.random()*100);
                 right.setText(""+rand);
                 score.setText(name.getText().toString()+"'s Score: 0");
+                timer=new Timer();
+                duration=0;
+                timer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String currentTime = getString(R.string.time,duration++);
+                                timeTracker.setVisibility(View.VISIBLE);
+                                timeTracker.setText("Time Remaining: " + (30-duration)+ " seconds");
+                                if(duration>=30){
+                                    graphic.setImageResource(R.drawable.yourtimeisup);
+                                    left.setClickable(false);
+                                    left.setVisibility(View.INVISIBLE);
+                                    right.setVisibility(View.INVISIBLE);
+                                    right.setClickable(false);
+                                    reset.setClickable(true);
+                                    reset.setVisibility(View.VISIBLE);
+                                    timer.cancel();
+                                    timer.purge();
+                                }
+
+                            }
+                        });
+                    }
+                }, 1000, 1000);
             }
         });
         left.setOnClickListener(new View.OnClickListener(){
@@ -82,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
                     right.setClickable(false);
                     reset.setClickable(true);
                     reset.setVisibility(View.VISIBLE);
+                    timeTracker.setVisibility(View.INVISIBLE);
+                    timer.cancel();
                 }
                 else if(scores == -200){ //else show a sorry image
                     graphic.setImageResource(R.drawable.sorry);
@@ -91,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
                     right.setClickable(false);
                     reset.setClickable(true);
                     reset.setVisibility(View.VISIBLE);
+                    timeTracker.setVisibility(View.INVISIBLE);
+                    timer.cancel();
                 }
                 else {
                     int rand = (int)(Math.random()*100);
@@ -133,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
                     right.setClickable(false);
                     reset.setClickable(true);
                     reset.setVisibility(View.VISIBLE);
+                    timeTracker.setVisibility(View.INVISIBLE);
+                    timer.cancel();
                 }
                 else if(scores == -200){
                     graphic.setImageResource(R.drawable.sorry);
@@ -142,6 +179,8 @@ public class MainActivity extends AppCompatActivity {
                     right.setClickable(false);
                     reset.setClickable(true);
                     reset.setVisibility(View.VISIBLE);
+                    timeTracker.setVisibility(View.INVISIBLE);
+                    timer.cancel();
                 }
                 else {
                     int rand = (int)(Math.random()*100);
@@ -163,6 +202,8 @@ public class MainActivity extends AppCompatActivity {
                 name.setClickable(true);
                 name.setVisibility(View.VISIBLE);
                 name.setText("");
+                timeTracker.setText("Time remaining: 30 seconds");
+                timeTracker.setVisibility(View.INVISIBLE);
             }
         });
 
