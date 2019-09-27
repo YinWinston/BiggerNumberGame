@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.os.Bundle;
 import android.app.Dialog;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView graphic;
     int scores,duration = 0;
     Timer timer;
+    ProgressBar progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,9 +37,11 @@ public class MainActivity extends AppCompatActivity {
         graphic = findViewById(R.id.graphic);
         reset = findViewById(R.id.reset);
         timeTracker = findViewById(R.id.timer);
+        progress = findViewById(R.id.timebar);
         start.setOnClickListener(new View.OnClickListener(){//once started, left button and right numbers get random numbers between 0-100 and start button becomes invisible
             @Override
             public void onClick(View v){
+                progress.setVisibility(View.VISIBLE);
                 left.setVisibility(View.VISIBLE);
                 right.setVisibility(View.VISIBLE);
                 left.setClickable(true);
@@ -50,7 +54,13 @@ public class MainActivity extends AppCompatActivity {
                 left.setText(""+rand);
                 rand = (int)(Math.random()*100);
                 right.setText(""+rand);
-                score.setText(name.getText().toString()+"'s Score: 0");
+                System.out.println(name.getText().toString());
+                if(!name.getText().toString().equals("")){
+                    score.setText(name.getText().toString()+"'s Score: " + scores);
+                }
+                else {
+                    score.setText("Your Score: " + scores);
+                }
                 timer=new Timer();
                 duration=0;
                 timer.scheduleAtFixedRate(new TimerTask() {
@@ -62,8 +72,11 @@ public class MainActivity extends AppCompatActivity {
                                 String currentTime = getString(R.string.time,duration++);
                                 timeTracker.setVisibility(View.VISIBLE);
                                 timeTracker.setText("Time Remaining: " + (30-duration)+ " seconds");
+                                progress.setProgress((int)(100-duration*(100.0/30.0)));
                                 if(duration>=30){
                                     graphic.setImageResource(R.drawable.yourtimeisup);
+                                    progress.setProgress(100);
+                                    progress.setVisibility(View.INVISIBLE);
                                     left.setClickable(false);
                                     left.setVisibility(View.INVISIBLE);
                                     right.setVisibility(View.INVISIBLE);
@@ -99,11 +112,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 }
-                if(name.getText().toString() != ""){
+                if(!name.getText().toString().equals("")){
                     score.setText(name.getText().toString()+"'s Score: " + scores);
                 }
                 else {
-                    score.setText("Your Score" + scores);
+                    score.setText("Your Score: " + scores);
                 }
                 if(scores == 500){// if score reaches 500, show congrats message
                     graphic.setImageResource(R.drawable.congrats);
@@ -154,11 +167,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 }
-                if(name.getText().toString() != ""){
+                if(!name.getText().toString().equals("")){
                     score.setText(name.getText().toString()+"'s Score: " + scores);
                 }
                 else {
-                    score.setText("Your Score" + scores);
+                    score.setText("Your Score: " + scores);
                 }
                 if(scores == 500){
                     graphic.setImageResource(R.drawable.congrats);
@@ -202,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
                 name.setClickable(true);
                 name.setVisibility(View.VISIBLE);
                 name.setText("");
+                graphic.setImageResource(R.drawable.numbers);
                 timeTracker.setText("Time remaining: 30 seconds");
                 timeTracker.setVisibility(View.INVISIBLE);
             }
