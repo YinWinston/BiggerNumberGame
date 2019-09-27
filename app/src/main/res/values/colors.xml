@@ -8,4 +8,5 @@
     <color name="yellow">#FFFF00</color>
     <color name="red">#FF0000</color>
     <color name = "white">#FFFFFF</color>
+    <color name = "lightRed">#E76F6F</color>
 </resources>
